@@ -1,0 +1,27 @@
+#maze {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+}
+
+.cell {
+  width: 25px;
+  height: 25px;
+}
+
+.start {
+  background: darkgreen;
+}
+
+.finish {
+  background: darkred;
+}
+
+.wall {
+  background: black;
+}
