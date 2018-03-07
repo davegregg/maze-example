@@ -19,8 +19,8 @@
  ▓░░░░░░░▓░░░░░░░▓░░░▓
  ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓`
 
-  const character = {
-    linebreak:  "\n " ,
+  const tokens = {
+    delimeter:  "\n " ,
     wall:       "▓"   ,
     space:      "░"   ,
     start:      "S"   ,
@@ -31,15 +31,15 @@
 
   function findPropertyNameByValue(object, value) {
     for (let name of Object.getOwnPropertyNames(object))
-      if (character[name] === value)
+      if (object[name] === value)
         var property = String(name)
 
     return property || null
   }
 
   function makeCellTotemCallback(rowDiv) {
-    return (cell, iCell) => {
-      const type = findPropertyNameByValue(character, cell)
+    return (cellAsToken, iCell) => {
+      const type = findPropertyNameByValue(tokens, cellAsToken)
       
       const cellDiv = document.createElement("div")
       cellDiv.dataset.index = iCell
@@ -67,11 +67,38 @@
     return rowTotem
   }
 
+  function moveHorizontally(arrow) {
+    if (arrow === "ArrowLeft") {
+
+    } else if (arrow === "ArrowRight") {
+      
+    }
+  }
+  function moveVertically(arrow) {
+    if (arrow === "ArrowDown") {
+
+    } else if (arrow === "ArrowUp") {
+
+    }
+  }
+
+  function keyHandler({ key }) {
+    const [ arrow ] = key.match(/Arrow\w+/) || [ false ]
+    log(arrow)
+
+    const isHorizontal = arrow === "ArrowLeft" || arrow === "ArrowRight"
+    const isVertical = arrow === "ArrowDown" || arrow === "ArrowUp"
+
+    if (isHorizontal) moveHorizontally(arrow)
+    if (isVertical) moveVertically(arrow)
+  }
+
   const maze = 
     map
-      .split(character.linebreak)
+      .split(tokens.delimeter)
       .map(makeRowTotem)
 
-  log(maze)
+  log(mazeContainer.childNodes)
+  document.addEventListener("keydown", keyHandler)
 
 }
