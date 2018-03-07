@@ -27,50 +27,84 @@
     finish:     "F"   ,
   }
 
-  const mazeContainer = document.getElementById("maze")
+  const mapContainer = document.getElementById( "maze" )
 
-  function findPropertyNameByValue(object, value) {
-    for (let name of Object.getOwnPropertyNames(object))
-      if (object[name] === value)
-        var property = String(name)
+  function findPropertyNameByValue( object, value ) {
+    for ( let name of Object.getOwnPropertyNames( object ) )
+      if ( object[ name ] === value )
+        var property = String( name )
 
     return property || null
   }
 
-  function makeRow(rowAsString, rowIndex) {
-    const rowDiv = document.createElement("div")
-    rowDiv.dataset.index = rowIndex
-    rowDiv.classList.add("row")
+  const make = {
 
-    const row = [...rowAsString]
-    row.forEach(makeCell(rowDiv))
+    map: () => {
+      map
+        .split( tokens.delimeter )
+        .forEach( make.row )
+    },
 
-    mazeContainer.appendChild(rowDiv)
+    row: ( rowAsString, rowIndex ) => {
+      const rowDiv = document.createElement( "div" )
+      rowDiv.dataset.index = rowIndex
+      rowDiv.classList.add( "row" )
+  
+      const row = [ ...rowAsString ]
+      row.forEach( make.cell( rowDiv ) )
+  
+      mapContainer.appendChild( rowDiv )
+    },
+
+    cell: ( rowDiv ) => {
+      callBackWithForEachCallback:
+      return ( cellToken, cellIndex ) => {
+        const type = findPropertyNameByValue( tokens, cellToken )
+  
+        const cellDiv = document.createElement( "div" )
+        cellDiv.dataset.index = cellIndex
+        cellDiv.dataset.type = type
+        cellDiv.classList.add( "cell", type )
+  
+        rowDiv.appendChild( cellDiv )
+      }
+    },
+
   }
 
-  function makeCell(rowDiv) {
-    callBackWithForEachCallback:
-    return (cellToken, cellIndex) => {
-      const type = findPropertyNameByValue(tokens, cellToken)
-
-      const cellDiv = document.createElement("div")
-      cellDiv.dataset.index = cellIndex
-      cellDiv.dataset.type = type
-      cellDiv.classList.add("cell", type)
-
-      rowDiv.appendChild(cellDiv)
-    }
+  function keyHandler( event ) {
+    const [ key, arrow ] = event.key.match( /Arrow(\w+)/ ) || "" // [ "ArrowDown", "Down" ]
+    
+    if ( arrow ) 
+      const direction = arrow.toLowerCase() // "down"
+      if (check[ direction ]())
+        move[ direction ]()
   }
 
-  function keyHandler(event) {
-    const [key, arrow] = event.key.match(/Arrow(\w+)/) || [false]
-    if (arrow) move[arrow.toLowerCase()]()
+  const check = {
+
+    left: function () { 
+      return true
+    },
+    
+    right: function () {
+      return true
+    },
+    
+    down: function () {
+      return true
+    },
+    
+    up: function () {
+      return true
+    },
+    
   }
 
   const move = {
 
     left: () => { 
-        log("left")
+      log("left")
     },
 
     right: () => {
@@ -88,15 +122,10 @@
   }
 
   function loadGame() {
-
-    map
-      .split(tokens.delimeter)
-      .forEach(makeRow)
+    document.addEventListener( "keydown", keyHandler )
+    make.map()
     
-    document.addEventListener("keydown", keyHandler)
-    
-    log(mazeContainer.childNodes)
-    
+    log( mapContainer.childNodes )
   }
 
   loadGame()
