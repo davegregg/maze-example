@@ -37,68 +37,71 @@
     return property || null
   }
 
-  function makeCellTotemCallback(rowDiv) {
-    return (cellAsToken, iCell) => {
-      const type = findPropertyNameByValue(tokens, cellAsToken)
-      
+  function makeRow(rowAsString, rowIndex) {
+    const rowDiv = document.createElement("div")
+    rowDiv.dataset.index = rowIndex
+    rowDiv.classList.add("row")
+
+    const row = [...rowAsString]
+    row.forEach(makeCell(rowDiv))
+
+    mazeContainer.appendChild(rowDiv)
+  }
+
+  function makeCell(rowDiv) {
+    callBackWithForEachCallback:
+    return (cellToken, cellIndex) => {
+      const type = findPropertyNameByValue(tokens, cellToken)
+
       const cellDiv = document.createElement("div")
-      cellDiv.dataset.index = iCell
+      cellDiv.dataset.index = cellIndex
+      cellDiv.dataset.type = type
       cellDiv.classList.add("cell", type)
 
       rowDiv.appendChild(cellDiv)
-
-      const cellTotem = [ cellDiv, type ]
-      return cellTotem
     }
   }
 
-  function makeRowTotem(rowAsString, iRow) {
-    const rowDiv = document.createElement("div")
-    rowDiv.dataset.index = iRow
-    rowDiv.classList.add("row")
-
-    mazeContainer.appendChild(rowDiv)
-
-    const row = [...rowAsString].map(
-      makeCellTotemCallback(rowDiv)
-    )
-
-    const rowTotem = [ rowDiv, row ]
-    return rowTotem
+  function keyHandler(event) {
+    const [key, arrow] = event.key.match(/Arrow(\w+)/) || [false]
+    if (arrow) move[arrow.toLowerCase()]()
   }
 
-  function moveHorizontally(arrow) {
-    if (arrow === "ArrowLeft") {
+  const move = {
 
-    } else if (arrow === "ArrowRight") {
-      
-    }
-  }
-  function moveVertically(arrow) {
-    if (arrow === "ArrowDown") {
+    left: () => { 
+        log("left")
+    },
 
-    } else if (arrow === "ArrowUp") {
-
-    }
-  }
-
-  function keyHandler({ key }) {
-    const [ arrow ] = key.match(/Arrow\w+/) || [ false ]
-    log(arrow)
-
-    const isHorizontal = arrow === "ArrowLeft" || arrow === "ArrowRight"
-    const isVertical = arrow === "ArrowDown" || arrow === "ArrowUp"
-
-    if (isHorizontal) moveHorizontally(arrow)
-    if (isVertical) moveVertically(arrow)
+    right: () => {
+      log("right")
+    },
+    
+    down: () => {
+      log("down")
+    },
+    
+    up: () => {
+      log("up")
+    },
+    
   }
 
-  const maze = 
+  function loadGame() {
+
     map
       .split(tokens.delimeter)
-      .map(makeRowTotem)
+      .forEach(makeRow)
+    
+    document.addEventListener("keydown", keyHandler)
+    
+    log(mazeContainer.childNodes)
+    
+  }
 
-  log(mazeContainer.childNodes)
-  document.addEventListener("keydown", keyHandler)
+  loadGame()
+
+  // TODO: place player cell
+  // TODO: write move.${direction} methods
 
 }
