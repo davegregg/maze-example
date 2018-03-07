@@ -14,6 +14,7 @@
   height: 25px;
 }
 
+
 .start {
   background: darkgreen;
 }
@@ -24,4 +25,8 @@
 
 .wall {
   background: black;
+}
+
+#player {
+  background: lightseagreen;
 }

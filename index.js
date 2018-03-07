@@ -70,32 +70,48 @@
       }
     },
 
+    player: () => {
+      const playerDiv = document.createElement( "div" )
+      playerDiv.id = "player"
+      playerDiv.classList.add( "cell" )
+
+      const start = document.querySelector(`div.row div.cell[data='${ tokens.start }']`)
+      start.appendChild(playerDiv)
+    },
+
   }
 
   function keyHandler( event ) {
-    const [ key, arrow ] = event.key.match( /Arrow(\w+)/ ) || "" // [ "ArrowDown", "Down" ]
+    const [ key, arrow ] = event.key.match( /Arrow(\w+)/ ) || []            // [ "ArrowDown", "Down" ]
+    if ( !arrow ) return null
     
-    if ( arrow ) 
-      const direction = arrow.toLowerCase() // "down"
-      if (check[ direction ]())
-        move[ direction ]()
+    const direction = arrow.toLowerCase()                                   // "down"
+    if (check[ direction ]())
+      move[ direction ]()
+  }
+
+  const deltas = {
+    left:  [ 0, -1 ],
+    right: [ 0, +1 ],
+    down:  [ +1, 0 ],
+    up:    [ -1, 0 ],
   }
 
   const check = {
 
-    left: function () { 
+    left: ( deltas = deltas ) => {
       return true
     },
     
-    right: function () {
+    right: ( deltas = deltas ) => {
       return true
     },
     
-    down: function () {
+    down: ( deltas = deltas ) => {
       return true
     },
     
-    up: function () {
+    up: ( deltas = deltas ) => {
       return true
     },
     
