@@ -1,7 +1,7 @@
 {
 
-  const log = (...args) => {
-    console.log(...args)
+  const log = ( ...args ) => {
+    console.log( ...args )
     return args[ args.length - 1 ]
   }
 
@@ -55,16 +55,16 @@
 
     next: offset => {
       const nextCell = getNextCell( offset )
-      const nextIsWall = nextCell ? (nextCell.dataset.type === "wall") : true
+      const nextIsWall = nextCell ? ( nextCell.dataset.type === "wall" ) : true
       const nextIsClear = !nextIsWall
 
       return nextIsClear
     },
 
-    left: () => log( "check left: ", check.next(offsetCoords.left) ),
-    right: () => log( "check right: ", check.next(offsetCoords.right) ),
-    down: () => log( "check down: ", check.next(offsetCoords.down) ),
-    up: () => log( "check up: ", check.next(offsetCoords.up) ),
+    left: () => log( "check left: ", check.next( offsetCoords.left ) ),
+    right: () => log( "check right: ", check.next( offsetCoords.right ) ),
+    down: () => log( "check down: ", check.next( offsetCoords.down ) ),
+    up: () => log( "check up: ", check.next( offsetCoords.up ) ),
     
   }
 
@@ -142,7 +142,7 @@
     const beyondLeftOrTop = rowCoord < 0 || cellCoord < 0
     const beyondRightOrBottom = 
       rowCoord > mapContainer.childNodes.length || 
-      cellCoord > mapContainer.childNodes[0].childNodes.length
+      cellCoord > mapContainer.childNodes[ 0 ].childNodes.length
 
     if ( beyondLeftOrTop || beyondRightOrBottom ) return null
 
@@ -187,14 +187,15 @@
       .then(({ finishingCellData }) => {
         return (
           finishingCellData.row == playerRow 
-          && finishingCellData.index == playerCell
+            && finishingCellData.index == playerCell
         )
       })
   }
 
 
   function keyHandler( event ) {
-    const [ key, arrow ] = event.key.match( /Arrow(\w+)/ ) || []            // [ "ArrowDown", "Down" ]
+    // const [ key, arrow ] = event.key.match( /Arrow(\w+)/ ) || []            // [ "ArrowDown", "Down" ]
+    const arrow = event.key.beginsWith( "Arrow" ) && event.key.split( "Arrow" )[ 1 ]
     if ( !arrow ) return null
     
     const direction = arrow.toLowerCase()                                   // "down"
@@ -203,7 +204,7 @@
         .then( checkWin )
   }
 
-
+  
   function loadGame() {
     make.map()
       .then(() => {
